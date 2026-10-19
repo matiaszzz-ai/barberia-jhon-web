@@ -18,7 +18,32 @@
   $$('.modal-overlay').forEach(layer=>layer.addEventListener('click',e=>{if(e.target===layer) {if(layer.id==='videoModal')stopVideo();else closeModal(layer.id)}}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.modal-overlay.open').forEach(layer=>{if(layer.id==='videoModal')stopVideo();else closeModal(layer.id)});setMenu(false)}});
   // All five videos are supplied by the owner, locally bundled, play only on click.
-  const playVideo=(key,title)=>{if(!['facciones','barberia-norte','limpieza','premio','como-llegar'].includes(key))return;const player=$('#modalPlayer');player.pause();player.removeAttribute('src');player.load();player.src='videos/'+key+'.mp4';$('#modalVideoTitle').textContent=title||'BARBERÍA JHON';openModal('videoModal');player.play().catch(()=>{});};
+  const playVideo=(key,title)=>{
+    if(!['facciones','barberia-norte','limpieza','premio','como-llegar'].includes(key))return;
+    const player=$('#modalPlayer'), frame=$('#videoModal .video-modal-frame');
+    if(!player||!frame)return;
+    const sources=['assets/'+key+'.mp4','videos/'+key+'.mp4'];
+    frame.querySelector('.video-direct-link')?.remove();
+    const link=document.createElement('a');
+    link.className='video-direct-link';
+    link.href=sources[0];link.target='_blank';link.rel='noopener noreferrer';
+    link.textContent='¿No se reproduce? Abrir video directamente ↗';
+    link.style.cssText='display:block;margin:12px auto 0;color:#E0C46C;font:600 12px Arial,sans-serif;text-align:center;text-decoration:underline;position:relative;z-index:3';
+    frame.appendChild(link);
+    const label=$('#modalVideoTitle');label.textContent=title||'BARBERÍA JHON';
+    let current=0;
+    const attempt=()=>{
+      player.src=sources[current];player.load();link.href=sources[current];
+      const playing=player.play();
+      if(playing&&playing.catch)playing.catch(err=>{if(err.name!=='AbortError')label.textContent=(title||'BARBERÍA JHON')+' · Pulsa ▶ para reproducir'});
+    };
+    player.onerror=()=>{
+      if(current===0){current=1;attempt();}
+      else label.textContent=(title||'BARBERÍA JHON')+' · No se pudo cargar. Usa el enlace inferior.';
+    };
+    player.pause();player.removeAttribute('src');player.load();
+    openModal('videoModal');attempt();
+  };
   const stopVideo=()=>{const player=$('#modalPlayer');if(player){player.pause();player.removeAttribute('src');player.load()}closeModal('videoModal')};
   document.addEventListener('click',e=>{const item=e.target.closest('[data-video]');if(item){playVideo(item.dataset.video,item.dataset.videoTitle||'JHON') }});
   $('#closeVideo')?.addEventListener('click',stopVideo);
