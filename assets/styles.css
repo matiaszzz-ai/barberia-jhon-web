@@ -188,7 +188,7 @@
   pointer-events:none;
 }
 .editorial-card.wide-editorial .editorial-media-duo img:first-child{
-  object-position:58% 50%;
+  object-position:25% 50%;
   filter:grayscale(.55) brightness(.76) contrast(1.14);
 }
 .editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){
