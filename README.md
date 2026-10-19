@@ -1,20 +1,52 @@
-# Barbería y Peluquería Jhon — sitio web
-Sitio multipágina en HTML, CSS y JavaScript con fotografías y vídeos del negocio.
+# Barbería y Peluquería Jhon — Web V4
 
-## Carga inicial (única vez)
-1. Descarga y extrae **Barberia_Jhon_V4_Estilo_Flyer_Videos.zip** compartido en ChatGPT.
-2. En este repositorio pulsa **Add file → Upload files**.
-3. Arrastra **todo el contenido de la carpeta extraída** (los HTML sueltos y la carpeta `assets`), no el archivo ZIP sin extraer.
-4. Comprueba que `index.html` quede **en la raíz** del repositorio y que `assets/styles.css`, `assets/site.js`, `assets/data.js` y `assets/videos/` existan.
-5. Pulsa **Commit changes**.
+## Estado
+✅ Código publicado en la rama `main`: 7 páginas HTML independientes, CSS, JavaScript y favicon SVG.
+⏳ Fotografías, logo e imágenes de portada/galería pendientes de subir.
+⏳ Cinco videos y sus miniaturas pendientes de subir.
 
-## Activar la vista previa
-Abre **Settings → Pages → Build and deployment** y selecciona **Deploy from a branch**, **main**, **/(root)** y **Save**.
+## Cómo agregar imágenes sin cambiar el código
+En el repositorio, entra a la carpeta `assets` y usa **Add file → Upload files**. Sube estos archivos con los nombres **exactos**, respetando mayúsculas/minúsculas:
 
-Vista previa prevista cuando GitHub Pages termine de publicar:
-https://matiaszzz-ai.github.io/barberia-jhon-web/
+- `logo-jhon.png`
+- `portada.webp`
+- `corte.webp`
+- `detalle.webp`
+- `flyer-promo.webp`
+- `edinsson.webp`
+- `manuel.webp`
+- `manuel-2.webp`
+- `jhon.webp`
+- `kevin.webp`
 
-La vista previa es pública. Reservas y valoraciones siguen siendo demostrativas hasta integrar servicios reales. Los productos solo preparan mensajes; no cobran por la web.
+## Cómo agregar los videos
+Crea o sube la carpeta `assets/videos` con los nombres **exactos** siguientes:
 
-## Cambios posteriores
-ChatGPT conectado a GitHub puede editar los archivos de este repositorio. Para cambiar precios, usar `assets/data.js`; para estilos, `assets/styles.css`. Una vez publicados los cambios en `main`, se verán al actualizar el mismo enlace, sin descargar otro ZIP.
+Videos:
+- `barberia-norte.mp4`
+- `como-llegar.mp4`
+- `facciones.mp4`
+- `limpieza.mp4`
+- `premio.mp4`
+
+Miniaturas de video:
+- `barberia-norte.jpg`
+- `como-llegar.jpg`
+- `facciones.jpg`
+- `limpieza.jpg`
+- `premio.jpg`
+
+Puedes extraer estos archivos del ZIP V4 compartido en ChatGPT. En GitHub web puedes arrastrar los archivos desde las carpetas extraídas. Al finalizar haz clic en **Commit changes**.
+
+## Sitio de prueba
+Configuración de GitHub Pages: **Settings → Pages → Deploy from a branch → main / (root)**.
+
+Dirección: https://matiaszzz-ai.github.io/barberia-jhon-web/
+
+La página puede mostrar imágenes vacías mientras faltan los archivos; no hay que modificar el HTML para integrarlos.
+
+## Actualizaciones posteriores
+ChatGPT conectado a este repositorio puede actualizar el código. Precios y servicios están en `assets/data.js`. Estilos en `assets/styles.css` y funcionalidades en `assets/site.js`. No requiere descargar un ZIP nuevo.
+
+## Aviso
+Las reservas y calificaciones están en modo demostración y todavía no generan citas confirmadas o reseñas públicas. La tienda no procesa pagos.
