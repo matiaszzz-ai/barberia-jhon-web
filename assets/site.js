@@ -42,11 +42,39 @@
       else label.textContent=(title||'BARBERÍA JHON')+' · No se pudo cargar. Usa el enlace inferior.';
     };
     player.pause();player.removeAttribute('src');player.load();
+    reelPreviews.forEach(video=>video.pause());
     openModal('videoModal');attempt();
   };
-  const stopVideo=()=>{const player=$('#modalPlayer');if(player){player.pause();player.removeAttribute('src');player.load()}closeModal('videoModal')};
+  const stopVideo=()=>{const player=$('#modalPlayer');if(player){player.pause();player.removeAttribute('src');player.load()}closeModal('videoModal');if(typeof playVisibleReels==='function')playVisibleReels();};
   document.addEventListener('click',e=>{const item=e.target.closest('[data-video]');if(item){playVideo(item.dataset.video,item.dataset.videoTitle||'JHON') }});
   $('#closeVideo')?.addEventListener('click',stopVideo);
+  // Reels verticales: autoplay silencioso y en bucle, cargados solo al entrar en pantalla.
+  const reelPreviews=$('.reel-preview');
+  const mediaMotionReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
+  const previewsVisible=new Set();
+  const playVisibleReels=()=>{
+    for(const video of reelPreviews){
+      const active=previewsVisible.has(video)&&document.visibilityState==='visible'&&!$('#videoModal')?.classList.contains('open')&&!mediaMotionReduced;
+      if(!active){video.pause();continue;}
+      video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;
+      if(!video.src && video.dataset.src)video.src=video.dataset.src;
+      if(video.paused){const request=video.play();if(request?.catch)request.catch(()=>{});}
+    }
+  };
+  if(reelPreviews.length){
+    if('IntersectionObserver' in window){
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{if(entry.isIntersecting)previewsVisible.add(entry.target);else previewsVisible.delete(entry.target)});
+        playVisibleReels();
+      },{threshold:.2,rootMargin:'40px 0px'});
+      reelPreviews.forEach(video=>observer.observe(video));
+    }else{
+      reelPreviews.forEach(video=>previewsVisible.add(video));
+      playVisibleReels();
+    }
+    document.addEventListener('visibilitychange',playVisibleReels);
+    window.addEventListener('pageshow',playVisibleReels);
+  }
   // Service prices are edited in assets/data.js.
   const tabs=$('#serviceTabs'),serviceSearch=$('#serviceSearch'),serviceRows=$('#serviceRows');let category='barberia';
   if(serviceRows){
