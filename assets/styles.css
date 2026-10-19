@@ -174,3 +174,34 @@
 .editorial-card.type-editorial>span,.editorial-card.type-editorial h3{z-index:2}
 @media(max-width:850px){.editorial-media-duo{grid-template-columns:52% 48%}.editorial-media-duo img:nth-child(2){object-position:50% center}}
 @media(max-width:600px){.editorial-media-duo{grid-template-columns:55% 45%}.editorial-card.type-editorial>img.store-editorial-photo{object-position:center 53%}}
+
+
+/* Portada Servicios — contraste real entre resultado y proceso, sin rostros duplicados. */
+.editorial-card.wide-editorial .editorial-media-duo{
+  grid-template-columns:minmax(0,62fr) minmax(0,38fr);
+  gap:5px;
+  background:#080708;
+}
+.editorial-card.wide-editorial .editorial-media-duo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(0,0,0,.57),transparent 46%);
+  pointer-events:none;
+}
+.editorial-card.wide-editorial .editorial-media-duo img:first-child{
+  object-position:58% 50%;
+  filter:grayscale(.55) brightness(.76) contrast(1.14);
+}
+.editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){
+  object-position:51% 33%;
+  filter:grayscale(.55) brightness(.67) contrast(1.12);
+}
+.editorial-card.wide-editorial .editorial-gradient{
+  z-index:1;
+  background:linear-gradient(0deg,rgba(0,0,0,.9),transparent 38%);
+}
+.editorial-card.wide-editorial>span,
+.editorial-card.wide-editorial h3{z-index:2;}
+@media(max-width:600px){
+  .editorial-card.wide-editorial .editorial-media-duo{grid-template-columns:minmax(0,61fr) minmax(0,39fr);gap:3px;}
+  .editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){object-position:51% 35%;}
+}
