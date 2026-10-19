@@ -95,3 +95,9 @@
   .page-hero .page-title-container>p{margin-top:15px;font-size:9px;line-height:1.7;letter-spacing:.14em}
   .page-hero.store-hero .store-huge-j{font-size:330px}
 }
+
+/* Horarios oficiales — reservas y ubicación */
+.booking-hours-hint{margin:-7px 0 0;color:#c8b7d1;font:600 11px/1.6 var(--body);letter-spacing:.02em}
+.location-detail small{line-height:1.9}
+.location-detail strong{font-size:clamp(19px,2.25vw,27px);overflow-wrap:break-word}
+@media(max-width:600px){.booking-hours-hint{font-size:10px;line-height:1.7}.location-detail strong{font-size:21px}.location-detail small{font-size:10px}}
