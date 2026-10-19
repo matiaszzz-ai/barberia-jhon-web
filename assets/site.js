@@ -49,7 +49,7 @@
   document.addEventListener('click',e=>{const item=e.target.closest('[data-video]');if(item){playVideo(item.dataset.video,item.dataset.videoTitle||'JHON') }});
   $('#closeVideo')?.addEventListener('click',stopVideo);
   // Reels verticales: autoplay silencioso y en bucle, cargados solo al entrar en pantalla.
-  const reelPreviews=$('.reel-preview');
+  const reelPreviews=$$('.reel-preview');
   const mediaMotionReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
   const previewsVisible=new Set();
   const playVisibleReels=()=>{
