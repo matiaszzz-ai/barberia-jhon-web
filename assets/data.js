@@ -5,9 +5,18 @@ window.JHON = {
   color: '#7107AF',
   whatsapp: '', // Pendiente: escribir número internacional sin + (ejemplo 5939XXXXXXXX).
   direccion: 'Av. Jorge Garcés y Francisco Reboledo, Comité del Pueblo, Quito',
+  horarios: {
+    '0': {inicio:'08:30', fin:'19:00'}, // Domingo
+    '1': {inicio:'09:00', fin:'20:00'}, // Lunes
+    '2': {inicio:'09:00', fin:'20:00'}, // Martes
+    '3': {inicio:'09:00', fin:'20:00'}, // Miércoles
+    '4': {inicio:'09:00', fin:'20:00'}, // Jueves
+    '5': {inicio:'08:30', fin:'20:00'}, // Viernes
+    '6': {inicio:'08:30', fin:'20:00'}  // Sábado
+  },
   equipo: [
     {id:'edinsson', nombre:'Edinsson', foto:'assets/edinsson.webp'},
-    {id:'manuel', nombre:'Manuel', foto:'assets/manuel.webp'},
+    {id:'andy', nombre:'Andy', foto:'assets/manuel.webp'},
     {id:'jhon', nombre:'Jhon', foto:'assets/jhon.webp'},
     {id:'kevin', nombre:'Kevin', foto:'assets/kevin.webp'},
     {id:'manuel-2', nombre:'Manuel', foto:'assets/manuel-2.webp'}
