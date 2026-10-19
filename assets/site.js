@@ -18,7 +18,7 @@
   $$('.modal-overlay').forEach(layer=>layer.addEventListener('click',e=>{if(e.target===layer) {if(layer.id==='videoModal')stopVideo();else closeModal(layer.id)}}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.modal-overlay.open').forEach(layer=>{if(layer.id==='videoModal')stopVideo();else closeModal(layer.id)});setMenu(false)}});
   // All five videos are supplied by the owner, locally bundled, play only on click.
-  const playVideo=(key,title)=>{if(!['facciones','barberia-norte','limpieza','premio','como-llegar'].includes(key))return;const player=$('#modalPlayer');player.pause();player.removeAttribute('src');player.load();player.src='assets/videos/'+key+'.mp4';$('#modalVideoTitle').textContent=title||'BARBERÍA JHON';openModal('videoModal');player.play().catch(()=>{});};
+  const playVideo=(key,title)=>{if(!['facciones','barberia-norte','limpieza','premio','como-llegar'].includes(key))return;const player=$('#modalPlayer');player.pause();player.removeAttribute('src');player.load();player.src='videos/'+key+'.mp4';$('#modalVideoTitle').textContent=title||'BARBERÍA JHON';openModal('videoModal');player.play().catch(()=>{});};
   const stopVideo=()=>{const player=$('#modalPlayer');if(player){player.pause();player.removeAttribute('src');player.load()}closeModal('videoModal')};
   document.addEventListener('click',e=>{const item=e.target.closest('[data-video]');if(item){playVideo(item.dataset.video,item.dataset.videoTitle||'JHON') }});
   $('#closeVideo')?.addEventListener('click',stopVideo);
