@@ -56,7 +56,7 @@
       serviceRows.innerHTML=list.length?list.map(s=>`<article class="service-row"><div><strong class="service-name">${html(s.nombre)}</strong>${s.detalle?`<small class="service-detail">${html(s.detalle)}</small>`:''}</div><div class="service-price">${s.desde?'<small>DESDE</small>':''}${money(s.precio)}</div><a class="service-book" href="reservas.html?servicio=${encodeURIComponent(s.id)}" aria-label="Solicitar ${html(s.nombre)}">↗</a></article>`).join(''):'<p class="empty-message">No encontramos ese servicio.</p>';}
     tabs.addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;category=b.dataset.category;serviceSearch.value='';$$('[data-category]').forEach(x=>{x.classList.toggle('is-active',x===b);x.setAttribute('aria-selected',String(x===b))});renderServices()});serviceSearch.addEventListener('input',renderServices);renderServices();
   }
-  // Five actual professional photos; two uniforms read Manuel, so two separate profiles share that label.
+  // Los cinco profesionales se cargan desde data.js (incluye a Andy en el segundo perfil).
   const grid=$('#teamGrid');let selectedBarber=null,selectedRating=0;
   if(grid){grid.innerHTML=D.equipo.map((b,i)=>`<button type="button" class="team-card" data-barber="${html(b.id)}" aria-label="Abrir perfil de ${html(b.nombre)}"><div class="photo-frame"><img src="${html(b.foto)}" alt="Retrato de ${html(b.nombre)}" loading="lazy"></div><div class="team-card-info"><span class="team-card-name">${html(b.nombre)}</span><span class="team-card-role">JHON / PROFESIONAL 0${i+1}</span></div><span class="team-card-arrow">↗</span></button>`).join('');
     const paintStars=()=>$('#starButtons').innerHTML=Array.from({length:5},(_,i)=>`<button type="button" data-star="${i+1}" class="${i<selectedRating?'active':''}" aria-label="${i+1} estrellas" aria-pressed="${i+1===selectedRating}">★</button>`).join('');
@@ -82,8 +82,23 @@
     const select=id=>{chosenProfessional=id;$$('.booking-barber').forEach(b=>{const a=b.dataset.professional===id;b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a))})};
     choices.addEventListener('click',e=>{const b=e.target.closest('[data-professional]');if(b)select(b.dataset.professional)});
     if(D.equipo.some(b=>b.id===param.get('barbero')))select(param.get('barbero'));
-    const now=new Date();$('#bookingDate').min=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-    form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const s=D.servicios.find(x=>x.id===service.value),b=D.equipo.find(x=>x.id===chosenProfessional);const text=`Hola, Barbería y Peluquería Jhon. Quisiera consultar disponibilidad para una cita.\n\nNombre: ${$('#bookingName').value.trim()}\nServicio: ${s?.nombre||''}\nPrecio publicado: ${s?.desde?'Desde ':''}${money(s?.precio||0)}\nBarbero: ${b?(b.nombre+(b.nombre==='Manuel'?' (perfil '+String(D.equipo.findIndex(x=>x.id===b.id)+1).padStart(2,'0')+')':'')):'Sin preferencia'}\nFecha preferida: ${$('#bookingDate').value}\nHora preferida: ${$('#bookingTime').value}\n\n¿Podrían confirmar el horario y precio final?`;
+    const bookingDate=$('#bookingDate'), bookingTime=$('#bookingTime'), hoursHint=$('#bookingHoursHint');
+    const now=new Date();bookingDate.min=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const updateTimeRange=()=>{
+      const selected=bookingDate.value;
+      if(!selected){bookingTime.removeAttribute('min');bookingTime.removeAttribute('max');bookingTime.value='';if(hoursHint)hoursHint.textContent='LUN–JUE 9:00–20:00 · VIE–SÁB 8:30–20:00 · DOM 8:30–19:00';return;}
+      const day=new Date(selected+'T12:00:00').getDay();
+      const hours=D.horarios?.[day];
+      if(!hours)return;
+      bookingTime.min=hours.inicio;bookingTime.max=hours.fin;
+      if(bookingTime.value&&(bookingTime.value<hours.inicio||bookingTime.value>hours.fin))bookingTime.value='';
+      bookingTime.setCustomValidity('');
+      if(hoursHint)hoursHint.textContent='Horario de atención: '+hours.inicio+' a '+hours.fin+'. Sujeto a disponibilidad.';
+    };
+    bookingDate.addEventListener('change',updateTimeRange);
+    bookingTime.addEventListener('input',()=>bookingTime.setCustomValidity(''));
+    updateTimeRange();
+    form.addEventListener('submit',e=>{e.preventDefault();updateTimeRange();const day=bookingDate.value?new Date(bookingDate.value+'T12:00:00').getDay():null;const hours=day===null?null:D.horarios?.[day];if(hours && (bookingTime.value<hours.inicio || bookingTime.value>hours.fin)){bookingTime.setCustomValidity('Selecciona una hora dentro del horario de atención: '+hours.inicio+' a '+hours.fin+'.');}else{bookingTime.setCustomValidity('');}if(!form.reportValidity())return;const s=D.servicios.find(x=>x.id===service.value),b=D.equipo.find(x=>x.id===chosenProfessional);const text=`Hola, Barbería y Peluquería Jhon. Quisiera consultar disponibilidad para una cita.\n\nNombre: ${$('#bookingName').value.trim()}\nServicio: ${s?.nombre||''}\nPrecio publicado: ${s?.desde?'Desde ':''}${money(s?.precio||0)}\nBarbero: ${b?(b.nombre):'Sin preferencia'}\nFecha preferida: ${$('#bookingDate').value}\nHora preferida: ${$('#bookingTime').value}\n\n¿Podrían confirmar el horario y precio final?`;
       $('#bookingMessage').value=text;$('#bookingStatus').textContent='';openModal('bookingModal')});
     $('#closeBooking').addEventListener('click',()=>closeModal('bookingModal'));
     $('#copyBooking').addEventListener('click',async()=>{$('#bookingStatus').textContent=await safeCopy($('#bookingMessage').value)?'Solicitud copiada. Debes enviarla para que la barbería confirme.':'Selecciona el texto y cópialo manualmente.'});
