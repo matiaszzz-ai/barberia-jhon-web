@@ -117,10 +117,10 @@
     if(!canAdvance(1)||!canAdvance(2)){navigate(!canAdvance(1)?1:2);return;}
     const name=find('#bv8Name').value.trim(),phone=find('#bv8Whatsapp').value.trim(),notes=find('#bv8Notes').value.trim();
     if(name.length<2){error('Ingresa tu nombre para preparar la solicitud.');find('#bv8Name').focus();return;}
-    const digits=phone.replace(/\\D/g,'');
+    const digits=phone.replace(/[^0-9]/g,'');
     if(digits.length<9 || digits.length>15){error('Ingresa un número de WhatsApp válido, con código de país si corresponde.');find('#bv8Whatsapp').focus();return;}
     const service=D.servicios.find(x=>x.id===state.service),barber=D.equipo.find(x=>x.id===state.barber);
-    const message=['Hola, Barbería y Peluquería Jhon. Quiero consultar la disponibilidad para una cita.','','Nombre: '+name,'WhatsApp: '+phone,'Servicio: '+service.nombre,'Precio publicado: '+cost(service),'Barbero: '+barber.nombre,'Fecha preferida: '+fmtDate(state.date),'Hora preferida: '+state.time,notes?'Notas: '+notes:null,'','¿Podrían confirmarme si hay disponibilidad?'].filter(x=>x!==null).join('\\n');
+    const message=['Hola, Barbería y Peluquería Jhon. Quiero consultar la disponibilidad para una cita.','','Nombre: '+name,'WhatsApp: '+phone,'Servicio: '+service.nombre,'Precio publicado: '+cost(service),'Barbero: '+barber.nombre,'Fecha preferida: '+fmtDate(state.date),'Hora preferida: '+state.time,notes?'Notas: '+notes:null,'','¿Podrían confirmarme si hay disponibilidad?'].filter(x=>x!==null).join(String.fromCharCode(10));
     const modal=document.getElementById('bookingModal');
     const textarea=document.getElementById('bookingMessage');
     if(!modal||!textarea){error('No se pudo abrir el resumen. Reintenta.');return;}
@@ -131,6 +131,20 @@
     document.getElementById('copyBooking')?.focus();
   });
   document.getElementById('closeBooking')?.addEventListener('click',()=>{document.getElementById('bookingModal')?.classList.remove('open');document.getElementById('bookingModal')?.setAttribute('aria-hidden','true');document.body.style.overflow='';});
-  // El botón de copiar y el cierre por Escape los gestiona assets/site.js.
+    const copyButton=document.getElementById('copyBooking');
+  copyButton?.addEventListener('click',async()=>{
+    const field=document.getElementById('bookingMessage'),status=document.getElementById('bookingStatus');
+    if(!field)return;
+    let worked=false;
+    try{
+      if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(field.value);worked=true;}
+    }catch(e){worked=false;}
+    if(!worked){
+      field.focus();field.select();
+      try{worked=document.execCommand('copy')}catch(e){worked=false}
+    }
+    if(status)status.textContent=worked?'Solicitud copiada. Envíala a la barbería para confirmar tu cita.':'Selecciona y copia manualmente el mensaje para enviarlo a la barbería.';
+  });
+
   renderService();renderBarber();renderCalendar();renderSlots();summary();navigate(1);
 })();
