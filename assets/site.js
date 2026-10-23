@@ -76,48 +76,10 @@
     window.addEventListener('pageshow',playVisibleReels);
   }
 
-  // Aparición al hacer scroll; accesible y reversible en navegadores sin IntersectionObserver.
-  const reduceAnimations=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
-  if(!reduceAnimations && 'IntersectionObserver' in window){
-    const revealSelectors=[
-      '.home-editorial .editorial-head',
-      '.home-editorial .editorial-card',
-      '.home-videos .reels-heading',
-      '.home-videos .reel-card',
-      '.home-map .map-heading',
-      '.home-map .map-layout',
-      '.closing-banner .overline',
-      '.closing-banner .display',
-      '.closing-banner .btn-white',
-      '.services-section .headline-split',
-      '.services-section .service-title-line',
-      '.services-section .service-row',
-      '.team-section .headline-split',
-      '.team-section .team-card',
-      '.store-section .headline-split',
-      '.store-section .product-card',
-      '.reserve-form-container > h2',
-      '.reserve-form-container .booking-form',
-      '.location-detail'
-    ];
-    const revealNodes=$(revealSelectors.join(','));
-    const appearance=new IntersectionObserver(entries=>{
-      entries.forEach(({target,isIntersecting})=>{
-        if(!isIntersecting)return;
-        target.classList.add('reveal-visible');
-        appearance.unobserve(target);
-      });
-    },{threshold:.08,rootMargin:'0px 0px -20px 0px'});
-    revealNodes.forEach((node,i)=>{
-      node.classList.add('reveal-item');
-      node.style.setProperty('--reveal-delay',String(Math.min(i%3,2)*65)+'ms');
-      appearance.observe(node);
-    });
-  }
   // Service prices are edited in assets/data.js.
-  const tabs=$('#serviceTabs'),serviceSearch=$('#serviceSearch'),serviceRows=$('#serviceRows');let category='cortes';
+  const tabs=$('#serviceTabs'),serviceSearch=$('#serviceSearch'),serviceRows=$('#serviceRows');let category='all';
   if(serviceRows){
-    tabs.innerHTML=D.categorias.map(cat=>`<button type="button" data-category="${html(cat.id)}" class="${cat.id===category?'is-active':''}" role="tab" aria-selected="${cat.id===category}">${html(cat.nombre.toUpperCase())}</button>`).join('');
+    tabs.innerHTML=[{id:'all',nombre:'Todos'},...D.categorias].map(cat=>`<button type="button" data-category="${html(cat.id)}" class="${cat.id===category?'is-active':''}" role="tab" aria-selected="${cat.id===category}">${html(cat.nombre.toUpperCase())}</button>`).join('');
     function renderServices(){const q=normalize(serviceSearch.value.trim()),list=D.servicios.filter(s=>(q||category==='all'||s.cat===category)&&(!q||normalize(s.nombre+' '+(s.detalle||'')).includes(q)));
       const current=D.categorias.find(c=>c.id===category);$('#serviceCategory').textContent=q?'RESULTADOS':current?.nombre.toUpperCase()||'TODOS';$('#serviceCount').textContent=String(list.length).padStart(2,'0')+' SERVICIOS';
       serviceRows.innerHTML=list.length?list.map(s=>`<article class="service-row"><div><strong class="service-name">${html(s.nombre)}</strong>${s.detalle?`<small class="service-detail">${html(s.detalle)}</small>`:''}</div><div class="service-price">${s.desde?'<small>DESDE</small>':''}${money(s.precio)}</div><a class="service-book" href="reservas.html?servicio=${encodeURIComponent(s.id)}" aria-label="Solicitar ${html(s.nombre)}">↗</a></article>`).join(''):'<p class="empty-message">No encontramos ese servicio.</p>';}
@@ -169,5 +131,43 @@
       $('#bookingMessage').value=text;$('#bookingStatus').textContent='';openModal('bookingModal')});
     $('#closeBooking').addEventListener('click',()=>closeModal('bookingModal'));
     $('#copyBooking').addEventListener('click',async()=>{$('#bookingStatus').textContent=await safeCopy($('#bookingMessage').value)?'Solicitud copiada. Debes enviarla para que la barbería confirme.':'Selecciona el texto y cópialo manualmente.'});
+  }
+  // Aparición al hacer scroll; accesible y reversible en navegadores sin IntersectionObserver.
+  const reduceAnimations=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
+  if(!reduceAnimations && 'IntersectionObserver' in window){
+    const revealSelectors=[
+      '.home-editorial .editorial-head',
+      '.home-editorial .editorial-card',
+      '.home-videos .reels-heading',
+      '.home-videos .reel-card',
+      '.home-map .map-heading',
+      '.home-map .map-layout',
+      '.closing-banner .overline',
+      '.closing-banner .display',
+      '.closing-banner .btn-white',
+      '.services-section .headline-split',
+      '.services-section .service-title-line',
+      '.services-section .service-row',
+      '.team-section .headline-split',
+      '.team-section .team-card',
+      '.store-section .headline-split',
+      '.store-section .product-card',
+      '.reserve-form-container > h2',
+      '.reserve-form-container .booking-form',
+      '.location-detail'
+    ];
+    const revealNodes=$(revealSelectors.join(','));
+    const appearance=new IntersectionObserver(entries=>{
+      entries.forEach(({target,isIntersecting})=>{
+        if(!isIntersecting)return;
+        target.classList.add('reveal-visible');
+        appearance.unobserve(target);
+      });
+    },{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+    revealNodes.forEach((node,i)=>{
+      node.classList.add('reveal-item');
+      node.style.setProperty('--reveal-delay',String(Math.min(i%3,2)*65)+'ms');
+      appearance.observe(node);
+    });
   }
 })();
