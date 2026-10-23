@@ -223,3 +223,46 @@
   .home-map .map-frame{height:320px!important;min-height:320px!important}
   .header a.book-cta-gold{min-height:39px!important;padding:0 11px!important;font-size:9px!important}
 }
+
+/* V9 · Brillo dorado sutil en titulares destacados */
+@supports (-webkit-background-clip:text) or (background-clip:text) {
+  .bv8-hero h1 span,
+  .home-map .map-heading h2 span,
+  .home-map .map-info h3 em,
+  .closing-banner .display span {
+    color:#e8c681;
+    background-image:linear-gradient(
+      104deg,
+      #ac7d38 0%,
+      #d6a95d 22%,
+      #f8e0a5 40%,
+      #fff6dd 48%,
+      #ffffff 50%,
+      #fff1c6 52%,
+      #e8c079 61%,
+      #be8c49 78%,
+      #d7ae6e 100%
+    );
+    background-size:250% 100%;
+    background-position:125% center;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 2px 10px rgba(214,168,88,.13));
+    animation:jhonGoldHeadlineShimmer 6s ease-in-out infinite;
+  }
+}
+@keyframes jhonGoldHeadlineShimmer {
+  0%,15% {background-position:125% center}
+  70%,100% {background-position:-125% center}
+}
+@media (prefers-reduced-motion:reduce) {
+  .bv8-hero h1 span,
+  .home-map .map-heading h2 span,
+  .home-map .map-info h3 em,
+  .closing-banner .display span {
+    animation:none!important;
+    background-position:48% center!important;
+    filter:none!important;
+  }
+}
