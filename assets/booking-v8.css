@@ -171,3 +171,29 @@
  .bv8-step{animation:none}
  .bv8-service,.bv8-barber,.bv8-btn-next{transition:none}
 }
+/* Compartir solicitud por WhatsApp tras elegir servicio, fecha y profesional */
+.booking-share-actions{
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr);
+  align-items:stretch;gap:11px;margin-top:15px;
+}
+.booking-share-actions .booking-whatsapp-cta{
+  min-height:49px;padding:12px 18px;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  text-align:center;text-decoration:none;border-radius:4px;
+  color:#fff;background:linear-gradient(120deg,#087a4d,#149b63);
+  border:1px solid rgba(141,246,194,.45);
+  font:800 11px/1.45 'DM Sans',sans-serif;letter-spacing:.04em;
+  transition:transform .2s,filter .2s,box-shadow .2s;
+}
+.booking-share-actions .booking-whatsapp-cta:hover{
+  transform:translateY(-2px);filter:brightness(1.09);
+  box-shadow:0 9px 22px rgba(19,158,95,.23);
+}
+.booking-share-actions .booking-whatsapp-cta:focus-visible{outline:2px solid #e7c58c;outline-offset:4px}
+.booking-share-actions .booking-whatsapp-cta[hidden]{display:none!important}
+.booking-share-actions #copyBooking{min-height:49px;margin:0;justify-content:center}
+@media(max-width:600px){
+  .booking-share-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .booking-share-actions .booking-whatsapp-cta{transition:none}
+}
