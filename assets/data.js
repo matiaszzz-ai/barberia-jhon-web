@@ -3,7 +3,10 @@
 window.JHON = {
   nombre: 'Barbería y Peluquería Jhon',
   color: '#7107AF',
-  whatsapp: '', // Pendiente de confirmar el número oficial de la barbería.
+  whatsapp: '593962932993', // Número oficial confirmado: 096 293 2993.
+  instagram: 'https://www.instagram.com/barberiaypeluqueriajhon/',
+  facebook: 'https://www.facebook.com/barberiaypeluqueriajhon?locale=es_LA',
+  tiktok: 'https://www.tiktok.com/@barberiaypeluqueriajhon',
   direccion: 'Av. Jorge Garcés y Francisco Reboledo, Comité del Pueblo, Quito',
   horarios: {
     '0': {inicio:'08:30', fin:'19:00'}, // Domingo
