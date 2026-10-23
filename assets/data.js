@@ -3,7 +3,7 @@
 window.JHON = {
   nombre: 'Barbería y Peluquería Jhon',
   color: '#7107AF',
-  whatsapp: '593962932993', // Contacto público de la barbería; mantener actualizado.
+  whatsapp: '', // Pendiente de confirmar el número oficial de la barbería.
   direccion: 'Av. Jorge Garcés y Francisco Reboledo, Comité del Pueblo, Quito',
   horarios: {
     '0': {inicio:'08:30', fin:'19:00'}, // Domingo
