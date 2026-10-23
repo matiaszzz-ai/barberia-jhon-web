@@ -132,42 +132,50 @@
     $('#closeBooking').addEventListener('click',()=>closeModal('bookingModal'));
     $('#copyBooking').addEventListener('click',async()=>{$('#bookingStatus').textContent=await safeCopy($('#bookingMessage').value)?'Solicitud copiada. Debes enviarla para que la barbería confirme.':'Selecciona el texto y cópialo manualmente.'});
   }
-  // Aparición al hacer scroll; accesible y reversible en navegadores sin IntersectionObserver.
-  const reduceAnimations=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
-  if(!reduceAnimations && 'IntersectionObserver' in window){
-    const revealSelectors=[
-      '.home-editorial .editorial-head',
-      '.home-editorial .editorial-card',
-      '.home-videos .reels-heading',
-      '.home-videos .reel-card',
-      '.home-map .map-heading',
-      '.home-map .map-layout',
-      '.closing-banner .overline',
-      '.closing-banner .display',
-      '.closing-banner .btn-white',
-      '.services-section .headline-split',
-      '.services-section .service-title-line',
-      '.services-section .service-row',
-      '.team-section .headline-split',
-      '.team-section .team-card',
-      '.store-section .headline-split',
-      '.store-section .product-card',
-      '.reserve-form-container > h2',
-      '.reserve-form-container .booking-form',
-      '.location-detail'
-    ];
-    const revealNodes=$(revealSelectors.join(','));
-    const appearance=new IntersectionObserver(entries=>{
-      entries.forEach(({target,isIntersecting})=>{
-        if(!isIntersecting)return;
-        target.classList.add('reveal-visible');
-        appearance.unobserve(target);
+  // Animaciones de entrada al hacer scroll; no se aplica ocultamiento sin IntersectionObserver.
+  const prefersReducedMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
+  const appearanceTargets=[
+    '.home-editorial .editorial-head',
+    '.home-editorial .editorial-card',
+    '.home-videos .reels-heading',
+    '.home-videos .reel-card',
+    '.home-map .map-heading',
+    '.home-map .map-info',
+    '.home-map .map-frame',
+    '.closing-banner .display',
+    '.closing-banner .btn-white',
+    '.services-section .headline-split',
+    '.services-section .service-title-line',
+    '.services-section .service-row',
+    '.services-section .promo-poster',
+    '.team-section .headline-split',
+    '.team-section .team-card',
+    '.store-section .headline-split',
+    '.store-section .product-card',
+    '.videos-section .reels-heading',
+    '.videos-section .reel-card',
+    '.reserve-form-container > h2',
+    '.reserve-form-container .booking-form',
+    '.location-detail',
+    '.location-video'
+  ];
+  if(!prefersReducedMotion && 'IntersectionObserver' in window){
+    const nodes=$$(appearanceTargets.join(',')); // TODOS los elementos, no solo el primero.
+    if(nodes.length){
+      const appearance=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          const el=entry.target;
+          // Dos fotogramas separados aseguran que el navegador aplique la transición.
+          requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('reveal-visible')));
+          appearance.unobserve(el);
+        });
+      },{threshold:0.08,rootMargin:'0px 0px -24px 0px'});
+      nodes.forEach((node,i)=>{
+        node.classList.add('reveal-item');
+        node.style.setProperty('--reveal-delay',Math.min(i%3,2)*85+'ms');
+        appearance.observe(node);
       });
-    },{threshold:.08,rootMargin:'0px 0px -20px 0px'});
-    revealNodes.forEach((node,i)=>{
-      node.classList.add('reveal-item');
-      node.style.setProperty('--reveal-delay',String(Math.min(i%3,2)*65)+'ms');
-      appearance.observe(node);
-    });
+    }
   }
 })();
