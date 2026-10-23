@@ -205,3 +205,37 @@
   .editorial-card.wide-editorial .editorial-media-duo{grid-template-columns:minmax(0,61fr) minmax(0,39fr);gap:3px;}
   .editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){object-position:51% 35%;}
 }
+
+/* Servicios · corrección de fotografía y composición - 23 oct 2026 */
+.home-editorial .editorial-card.wide-editorial .editorial-media-duo{
+  grid-template-columns:minmax(0,57fr) minmax(0,43fr);
+  gap:3px;
+  background:#0c090f;
+}
+.home-editorial .editorial-card.wide-editorial .editorial-media-duo img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;max-width:none;
+  transition:transform .45s ease,filter .45s ease;
+}
+.home-editorial .editorial-card.wide-editorial .editorial-media-duo img:first-child{
+  object-position:39% 46%;
+  filter:grayscale(.24) brightness(.82) contrast(1.06);
+}
+.home-editorial .editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){
+  object-position:49% 39%;
+  filter:grayscale(.23) brightness(.69) contrast(1.05);
+}
+.home-editorial .editorial-card.wide-editorial .editorial-gradient{
+  z-index:1;
+  background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.38) 22%,transparent 61%);
+}
+.home-editorial .editorial-card.wide-editorial:hover .editorial-media-duo img{
+  transform:scale(1.035);
+}
+@media(max-width:600px){
+  .home-editorial .editorial-card.wide-editorial .editorial-media-duo{
+    grid-template-columns:minmax(0,57fr) minmax(0,43fr);gap:2px;
+  }
+  .home-editorial .editorial-card.wide-editorial .editorial-media-duo img:first-child{object-position:37% 46%}
+  .home-editorial .editorial-card.wide-editorial .editorial-media-duo img:nth-child(2){object-position:50% 33%}
+}
