@@ -125,6 +125,11 @@
     const textarea=document.getElementById('bookingMessage');
     if(!modal||!textarea){error('No se pudo abrir el resumen. Reintenta.');return;}
     textarea.value=message;
+    const whatsappAction=document.getElementById('sendBookingWhatsapp');
+    if(whatsappAction && /^\d{10,15}$/.test(String(D.whatsapp||''))){
+      whatsappAction.href='https://wa.me/'+D.whatsapp+'?text='+encodeURIComponent(message);
+      whatsappAction.hidden=false;
+    } else if(whatsappAction){whatsappAction.hidden=true;}
     const status=document.getElementById('bookingStatus');
     if(status)status.textContent='Esta solicitud no se guarda ni bloquea un horario. Cópiala y envíala a la barbería para confirmar.';
     modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
