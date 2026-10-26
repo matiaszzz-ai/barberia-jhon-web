@@ -42,7 +42,7 @@ window.JHON = {
     {id:'depilacion-ceja',cat:'barba',nombre:'Depilación de ceja',precio:3},
     {id:'combo-black',cat:'premium',nombre:'Corte + ceja + mascarilla negra',detalle:'Mascarilla negra en todo el rostro',precio:10},
     {id:'vip',cat:'premium',nombre:'Corte VIP',detalle:'Limpieza facial + corte + ceja',precio:25},
-    {id:'limpieza-facial',cat:'premium',nombre:'Limpieza facial',precio:10},
+    {id:'limpieza-facial',cat:'premium',nombre:'Limpieza facial',precio:20},
     {id:'semipermanente-caballero',cat:'color',nombre:'Semipermanente caballero',detalle:'Incluye corte de cabello',precio:45,desde:true},
     {id:'rayitos-caballero',cat:'color',nombre:'Rayitos para caballero',precio:45,desde:true},
     {id:'platinado',cat:'color',nombre:'Platinado completo caballero',detalle:'Incluye corte de cabello',precio:70,desde:true},
