@@ -112,44 +112,16 @@
   all('[data-prev-step]').forEach(b=>b.addEventListener('click',()=>navigate(Number(b.dataset.prevStep))));
   all('[data-step-label]').forEach(el=>el.addEventListener('click',()=>{const n=Number(el.dataset.stepLabel);if(n<state.step)navigate(n);}));
   const form=find('#bookingFormV8');
-  form.addEventListener('submit',async e=>{
+  form.addEventListener('submit',e=>{
     e.preventDefault();
-    if(!canAdvance(1)||!canAdvance(2)){navigate(!canAdvance(1)?1:2);return;}
-    const name=find('#bv8Name').value.trim(),phone=find('#bv8Whatsapp').value.trim(),notes=find('#bv8Notes').value.trim();
-    if(name.length<2){error('Ingresa tu nombre para preparar la solicitud.');find('#bv8Name').focus();return;}
-    const digits=phone.replace(/[^0-9]/g,'');
-    if(digits.length<9 || digits.length>15){error('Ingresa un número de WhatsApp válido, con código de país si corresponde.');find('#bv8Whatsapp').focus();return;}
-    const service=D.servicios.find(x=>x.id===state.service),barber=D.equipo.find(x=>x.id===state.barber);
-    const message=['Hola, Barbería y Peluquería Jhon. Quiero consultar la disponibilidad para una cita.','','Nombre: '+name,'WhatsApp: '+phone,'Servicio: '+service.nombre,'Precio publicado: '+cost(service),'Barbero: '+barber.nombre,'Fecha preferida: '+fmtDate(state.date),'Hora preferida: '+state.time,notes?'Notas: '+notes:null,'','¿Podrían confirmarme si hay disponibilidad?'].filter(x=>x!==null).join(String.fromCharCode(10));
-    const modal=document.getElementById('bookingModal');
-    const textarea=document.getElementById('bookingMessage');
-    if(!modal||!textarea){error('No se pudo abrir el resumen. Reintenta.');return;}
-    textarea.value=message;
-    const whatsappAction=document.getElementById('sendBookingWhatsapp');
-    if(whatsappAction && /^\d{10,15}$/.test(String(D.whatsapp||''))){
-      whatsappAction.href='https://wa.me/'+D.whatsapp+'?text='+encodeURIComponent(message);
-      whatsappAction.hidden=false;
-    } else if(whatsappAction){whatsappAction.hidden=true;}
-    const status=document.getElementById('bookingStatus');
-    if(status)status.textContent='Esta solicitud no se guarda ni bloquea un horario. Cópiala y envíala a la barbería para confirmar.';
-    modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-    document.getElementById('copyBooking')?.focus();
+    if(!canAdvance(1)){navigate(1);return;}
+    if(!canAdvance(2)){navigate(2);return;}
+    const name=find('#bv8Name').value.trim(),phone=find('#bv8Whatsapp').value.trim();
+    if(name.length<2){error('Ingresa tu nombre para preparar la solicitud.');return;}
+    if(phone.replace(/[^0-9]/g,'').length<9){error('Ingresa un número de contacto válido.');return;}
+    error('Esta es la vista previa HTML. Para registrar una cita real, instala el tema Jhon y el plugin Jhon Reservas en WordPress.');
+    const notice=document.getElementById('bv8BookingResult');
+    if(notice){notice.hidden=false;notice.scrollIntoView({behavior:'smooth',block:'center'});}
   });
-  document.getElementById('closeBooking')?.addEventListener('click',()=>{document.getElementById('bookingModal')?.classList.remove('open');document.getElementById('bookingModal')?.setAttribute('aria-hidden','true');document.body.style.overflow='';});
-    const copyButton=document.getElementById('copyBooking');
-  copyButton?.addEventListener('click',async()=>{
-    const field=document.getElementById('bookingMessage'),status=document.getElementById('bookingStatus');
-    if(!field)return;
-    let worked=false;
-    try{
-      if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(field.value);worked=true;}
-    }catch(e){worked=false;}
-    if(!worked){
-      field.focus();field.select();
-      try{worked=document.execCommand('copy')}catch(e){worked=false}
-    }
-    if(status)status.textContent=worked?'Solicitud copiada. Envíala a la barbería para confirmar tu cita.':'Selecciona y copia manualmente el mensaje para enviarlo a la barbería.';
-  });
-
   renderService();renderBarber();renderCalendar();renderSlots();summary();navigate(1);
 })();
