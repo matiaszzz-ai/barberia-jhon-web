@@ -197,3 +197,15 @@
 @media(prefers-reduced-motion:reduce){
   .booking-share-actions .booking-whatsapp-cta{transition:none}
 }
+
+/* Reserva integrada en Jhon — vista previa sin backend en GitHub Pages */
+.bv8-system-notice[hidden]{display:none!important}
+.bv8-system-notice{
+ max-width:900px;margin:32px auto 90px;padding:30px;
+ background:linear-gradient(135deg,#24112c,#100d15);
+ border:1px solid rgba(166,90,210,.55);border-radius:12px;
+ text-align:center;color:#f9f4fc;
+}
+.bv8-system-notice h2{font:400 clamp(34px,5vw,58px)/1.05 Anton,Arial,sans-serif;margin:0 0 18px}
+.bv8-system-notice p{font-size:13px;line-height:1.7;color:#d7c8de}
+.bv8-system-notice strong{color:#e8c688}
